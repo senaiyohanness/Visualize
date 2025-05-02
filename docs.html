@@ -37,24 +37,24 @@
 
   <h2>Design Process</h2>
   <p>
-    I started with a 2,500song Spotify dataset that includes danceability, energy, loudness, popularity, genre, and duration. My goal was to let users explore how these features relate across different genres and years. I began by sketching how filters and axes could be laid out. I chose a scatterplot because it’s I think it's simpler too look at and it fits for comparing two variables at a time. 
+    I started with a 2,500 songs Spotify dataset that includes danceability, energy, duration, genre, and other track information. My goal was to let users explore how musical traits relate across different genres and years. I began by sketching how filters and axes could be laid out. I chose a scatterplot because it's simple to understand and works well for comparing two variables at a time.
   </p>
   <p>
-    I tested a few axis pairings like Danceability vs Energy, and added dropdowns to change X and Y axes. The legend helps with understanding genre clusters. After refining the layout and tooltip interactivity, I deployed the project using GitHub Pages.
+    I tested pairings like Danceability vs Energy and added dropdowns so users can change which metrics show on the X and Y axes. The genre legend helps users interpret clusters. Once the layout and interactivity were solid, I deployed the visualization using GitHub Pages.
   </p>
 
   <h2>Design Choices</h2>
   <ul>
-    <li><strong>Scatterplot:</strong> best for visualizing the relationship between two quantitative metrics.</li>
-    <li><strong>Color encoding:</strong> used to represent genres for pattern recognition.</li>
-    <li><strong>Dropdowns:</strong> allow users to change the X and Y axis to explore other dimensions like loudness or popularity.</li>
-    <li><strong>Tooltips:</strong> show song title, artist, genre, and stats for context on hover.</li>
-    <li><strong>Filters:</strong> genre and year filters allow for narrowing results and discovering trends over time.</li>
+    <li><strong>Scatterplot:</strong> good for exploring relationships between numeric features like energy and danceability.</li>
+    <li><strong>Color encoding:</strong> used to distinguish genres visually and identify groupings.</li>
+    <li><strong>Dropdowns:</strong> let users explore different numeric variables (danceability, energy, duration).</li>
+    <li><strong>Tooltips:</strong> show the song title, artist, genre, explicit status, and duration on hover.</li>
+    <li><strong>Filters:</strong> genre and year filters allow focused exploration of subsets.</li>
   </ul>
 
   <h2>Findings and Discoveries</h2>
   <p>
-    So basically high energy songs often have high danceability, especially in genres like hip hop and EDM. And like poplarity doesn’t always match energy levels, showing mainstream hits come in many styles. Traditional genres had lower average energy.
+    I found that high energy songs tend to also have high danceability, especially in genres like hip hop and EDM. Traditional genres such as folk and world music tend to have lower average energy. The visualization makes it easy to spot genre patterns and outliers.
   </p>
 
   <h2>Sample Screenshots</h2>

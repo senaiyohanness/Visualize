@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .tooltip {
+            position: absolute;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 8px;
+            pointer-events: none;
+            font-size: 12px;
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            display: flex;
+        }
+        .controls {
+            margin-left: 30px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align:center">Scatterplot of 2,500 Spotify Tracks Colored by Genre</h2>
+
+<div class="container">
+    <div id="chart"></div>
+    <div class="controls">
+        <label for="genre-select"><strong>Filter by Genre:</strong></label>
+        <br>
+        <select id="genre-select">
+            <option value="All">All</option>
+        </select>
+        <br><br>
+        <label for="year-select"><strong>Filter by Year:</strong></label>
+        <br>
+        <select id="year-select">
+            <option value="All">All</option>
+        </select>
+        <br><br>
+        <label for="x-axis-select"><strong>X-axis:</strong></label>
+        <br>
+        <select id="x-axis-select">
+            <option value="danceability">Danceability</option>
+            <option value="energy">Energy</option>
+            <option value="duration_ms">Duration</option>
+            <option value="loudness">Loudness</option>
+            <option value="popularity">Popularity</option>
+        </select>
+        <br><br>
+        <label for="y-axis-select"><strong>Y-axis:</strong></label>
+        <br>
+        <select id="y-axis-select">
+            <option value="energy">Energy</option>
+            <option value="danceability">Danceability</option>
+            <option value="duration_ms">Duration</option>
+            <option value="loudness">Loudness</option>
+            <option value="popularity">Popularity</option>
+        </select>
+        <br><br>
+        <div id="legend"></div>
+    </div>
+</div>
+
+<script>
+const margin = { top: 20, right: 30, bottom: 40, left: 60 },
+      width = 800 - margin.left - margin.right,
+      height = 600 - margin.top - margin.bottom;
+
+const svg = d3.select("#chart")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+const tooltip = d3.select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+let allData, circles;
+
+function updateDropdown(selectElement, values) {
+    selectElement.selectAll("option:not(:first-child)").remove();
+    values.forEach(v => selectElement.append("option").attr("value", v).text(v));
+}
+
+function renderPlot(data, xKey, yKey, colorScale) {
+    const x = d3.scaleLinear()
+        .domain(d3.extent(data, d => d[xKey])).nice()
+        .range([0, width]);
+
+    const y = d3.scaleLinear()
+        .domain(d3.extent(data, d => d[yKey])).nice()
+        .range([height, 0]);
+
+    svg.selectAll(".axis").remove();
+
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(x));
+
+    svg.append("text")
+        .attr("class", "axis")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom - 5)
+        .attr("text-anchor", "middle")
+        .text(xKey.charAt(0).toUpperCase() + xKey.slice(1));
+
+    svg.append("g")
+        .attr("class", "axis")
+        .call(d3.axisLeft(y));
+
+    svg.append("text")
+        .attr("class", "axis")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -margin.left + 15)
+        .attr("text-anchor", "middle")
+        .text(yKey.charAt(0).toUpperCase() + yKey.slice(1));
+
+    circles = svg.selectAll("circle")
+        .data(data, d => d.song + d.artist)
+        .join("circle")
+        .attr("cx", d => x(d[xKey]))
+        .attr("cy", d => y(d[yKey]))
+        .attr("r", 4)
+        .attr("fill", d => colorScale(d.genre))
+        .attr("opacity", 0.7)
+        .on("mouseover", (event, d) => {
+            tooltip.transition().duration(200).style("opacity", 0.95);
+            tooltip.html(
+                `<strong>${d.song}</strong><br/>${d.artist}<br/>
+                 <em>${d.genre}</em><br/>
+                 Explicit: ${d.explicit}<br/>
+                 Duration: ${Math.round(d.duration_ms / 1000)}s<br/>
+                 Loudness: ${d.loudness}<br/>
+                 Popularity: ${d.popularity}`
+            )
+            .style("left", `${event.pageX + 10}px`)
+            .style("top", `${event.pageY - 28}px`);
+        })
+        .on("mouseout", () => tooltip.transition().duration(200).style("opacity", 0));
+}
+
+d3.csv("spotify_data.csv").then(data => {
+    data.forEach(d => {
+        d.danceability = +d.danceability;
+        d.energy = +d.energy;
+        d.duration_ms = +d.duration_ms;
+        d.loudness = +d.loudness;
+        d.popularity = +d.popularity;
+    });
+
+    allData = data;
+
+    const genres = Array.from(new Set(data.map(d => d.genre))).sort();
+    const years = Array.from(new Set(data.map(d => d.year))).sort((a, b) => +a - +b);
+
+    const colorScale = d3.scaleOrdinal()
+        .domain(genres)
+        .range(d3.schemeCategory10.concat(d3.schemePastel1, d3.schemeSet3));
+
+    const genreSelect = d3.select("#genre-select");
+    const yearSelect = d3.select("#year-select");
+    const xAxisSelect = d3.select("#x-axis-select");
+    const yAxisSelect = d3.select("#y-axis-select");
+
+    updateDropdown(genreSelect, genres);
+    updateDropdown(yearSelect, years);
+
+    // Legend
+    const legend = d3.select("#legend");
+    genres.forEach(g => {
+        const item = legend.append("div").attr("class", "legend-item");
+        item.append("div")
+            .attr("class", "legend-color")
+            .style("background-color", colorScale(g));
+        item.append("span").text(g);
+    });
+
+    function filterAndRender() {
+        const selectedGenre = genreSelect.property("value");
+        const selectedYear = yearSelect.property("value");
+        const xKey = xAxisSelect.property("value");
+        const yKey = yAxisSelect.property("value");
+
+        let filtered = allData;
+        if (selectedGenre !== "All") filtered = filtered.filter(d => d.genre === selectedGenre);
+        if (selectedYear !== "All") filtered = filtered.filter(d => d.year === selectedYear);
+
+        renderPlot(filtered, xKey, yKey, colorScale);
+    }
+
+    genreSelect.on("change", filterAndRender);
+    yearSelect.on("change", filterAndRender);
+    xAxisSelect.on("change", filterAndRender);
+    yAxisSelect.on("change", filterAndRender);
+
+    filterAndRender();
+});
+</script>
+
+</body>
+</html>

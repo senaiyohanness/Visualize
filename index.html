@@ -61,8 +61,6 @@
             <option value="danceability">Danceability</option>
             <option value="energy">Energy</option>
             <option value="duration_ms">Duration</option>
-            <option value="loudness">Loudness</option>
-            <option value="popularity">Popularity</option>
         </select>
         <br><br>
         <label for="y-axis-select"><strong>Y-axis:</strong></label>
@@ -71,8 +69,6 @@
             <option value="energy">Energy</option>
             <option value="danceability">Danceability</option>
             <option value="duration_ms">Duration</option>
-            <option value="loudness">Loudness</option>
-            <option value="popularity">Popularity</option>
         </select>
         <br><br>
         <div id="legend"></div>
@@ -152,9 +148,7 @@ function renderPlot(data, xKey, yKey, colorScale) {
                 `<strong>${d.song}</strong><br/>${d.artist}<br/>
                  <em>${d.genre}</em><br/>
                  Explicit: ${d.explicit}<br/>
-                 Duration: ${Math.round(d.duration_ms / 1000)}s<br/>
-                 Loudness: ${d.loudness}<br/>
-                 Popularity: ${d.popularity}`
+                 Duration: ${Math.round(d.duration_ms / 1000)}s`
             )
             .style("left", `${event.pageX + 10}px`)
             .style("top", `${event.pageY - 28}px`);
@@ -167,8 +161,6 @@ d3.csv("spotify_data.csv").then(data => {
         d.danceability = +d.danceability;
         d.energy = +d.energy;
         d.duration_ms = +d.duration_ms;
-        d.loudness = +d.loudness;
-        d.popularity = +d.popularity;
     });
 
     allData = data;

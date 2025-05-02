@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spotify Visualization – Documentation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      max-width: 900px;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    iframe {
+      width: 100%;
+      height: 400px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+    }
+    img {
+      width: 100%;
+      max-width: 600px;
+      border: 1px solid #ddd;
+      margin: 15px 0;
+    }
+    a {
+      color: blue;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Spotify Track Visualization Project</h1>
+
+  <h2>Design Process</h2>
+  <p>
+    I started with a 2,500song Spotify dataset that includes danceability, energy, loudness, popularity, genre, and duration. My goal was to let users explore how these features relate across different genres and years. I began by sketching how filters and axes could be laid out. I chose a scatterplot because it’s I think it's simpler too look at and it fits for comparing two variables at a time. 
+  </p>
+  <p>
+    I tested a few axis pairings like Danceability vs Energy, and added dropdowns to change X and Y axes. The legend helps with understanding genre clusters. After refining the layout and tooltip interactivity, I deployed the project using GitHub Pages.
+  </p>
+
+  <h2>Design Choices</h2>
+  <ul>
+    <li><strong>Scatterplot:</strong> best for visualizing the relationship between two quantitative metrics.</li>
+    <li><strong>Color encoding:</strong> used to represent genres for pattern recognition.</li>
+    <li><strong>Dropdowns:</strong> allow users to change the X and Y axis to explore other dimensions like loudness or popularity.</li>
+    <li><strong>Tooltips:</strong> show song title, artist, genre, and stats for context on hover.</li>
+    <li><strong>Filters:</strong> genre and year filters allow for narrowing results and discovering trends over time.</li>
+  </ul>
+
+  <h2>Findings and Discoveries</h2>
+  <p>
+    So basically high energy songs often have high danceability, especially in genres like hip hop and EDM. And like poplarity doesn’t always match energy levels, showing mainstream hits come in many styles. Traditional genres had lower average energy.
+  </p>
+
+  <h2>Sample Screenshots</h2>
+  <p>Danceability vs Energy across all genres:</p>
+  <img src="https://raw.githubusercontent.com/senaiyohanness/Visualize/main/screenshot1.png" alt="Scatterplot Screenshot">
+
+  <h2>Video Walkthrough</h2>
+  <p>Below is a recorded walkthrough of my interactive visualization:</p>
+  <iframe src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+  <p><em>Note: Replace VIDEO_ID with your YouTube video ID after uploading.</em></p>
+
+  <p><a href="index.html">← Back to the Visualization</a></p>
+
+</body>
+</html>

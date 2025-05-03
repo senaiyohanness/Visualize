@@ -37,29 +37,42 @@
 
   <h2>Design Process</h2>
   <p>
-    I started with a 2,500 songs Spotify dataset that includes danceability, energy, duration, genre, and other track information. My goal was to let users explore how musical traits relate across different genres and years. I began by sketching how filters and axes could be laid out. I chose a scatterplot because it's simple to understand and works well for comparing two variables at a time.
+    I began with a dataset of 2,500 Spotify songs. There was extra attributes which I removed. My initial idea was to make an interactive tool that helps people explore how songs vary across genres and over time. At first, I sketched out a basic scatter plot, but I realized they would be too limiting. Instead, I landed on a scatterplot, which is betterer for comparing any two quantitative features like danceability, energy, and duration_ms.
   </p>
   <p>
-    I tested pairings like Danceability vs Energy and added dropdowns so users can change which metrics show on the X and Y axes. The genre legend helps users interpret clusters. Once the layout and interactivity were solid, I deployed the visualization using GitHub Pages.
+    I placed the filters and controls on the right so they wouldn’t crowd the chart and would be easily accessible without hiding data. As I coded in D3.js, I tested different axis combinations and ensured the tooltip gave enough detail without cluttering the interface. Once the interaction felt smooth, I moved on to styling, tooltips, and final adjustments before deploying to GitHub Pages.
   </p>
+
+  <h2>Initial Sketch</h2>
+  <p>
+     I started with a sketch on paint for windows to basically figure out where filters, axis controls, and the legend would go, And so below is my original sketch idea. I initially planned to represent <strong>popularity</strong> using circle size so, larger = more popular, but I found that this approach made it hard to see smaller songs, especially when popular ones overlapped them. I removed that idea from the final version just because it makes more sense honestly.
+  </p>
+  <img src="https://raw.githubusercontent.com/senaiyohanness/Visualize/main/sketch.png" alt="Initial Sketch of Popularity-based Sizing">
 
   <h2>Design Choices</h2>
   <ul>
-    <li><strong>Scatterplot:</strong> good for exploring relationships between numeric features like energy and danceability.</li>
-    <li><strong>Color encoding:</strong> used to distinguish genres visually and identify groupings.</li>
-    <li><strong>Dropdowns:</strong> let users explore different numeric variables (danceability, energy, duration).</li>
-    <li><strong>Tooltips:</strong> show the song title, artist, genre, explicit status, and duration on hover.</li>
-    <li><strong>Filters:</strong> genre and year filters allow focused exploration of subsets.</li>
+    <li><strong>Scatterplot:</strong> great for comparing two numeric features and showing patterns naturally.</li>
+    <li><strong>Color encoding:</strong> used to represent genre, making it easy to visually group songs by type.</li>
+    <li><strong>Dropdowns:</strong> allow users to change X and Y axes dynamically so, danceability, energy, duration_ms.</li>
+    <li><strong>Filters:</strong> users can filter by genre or year to explore more focused subsets of data.</li>
+    <li><strong>Tooltips:</strong> show title, artist, genre, explicit status, and duration — giving context on hover.</li>
+    <li><strong>Layout:</strong> filters on the right side to keep the chart clean and interaction intuitive.</li>
   </ul>
 
   <h2>Findings and Discoveries</h2>
   <p>
-    I found that high energy songs tend to also have high danceability, especially in genres like hip hop and EDM. Traditional genres such as folk and world music tend to have lower average energy. The visualization makes it easy to spot genre patterns and outliers.
+    By exploring the scatterplot, I noticed that genres like EDM and hip hop consistently score high in both energy and danceability, which supports the idea that they’re made for movement and rhythm. In contrast, folk and world music genres generally occupy the lower end of the energy spectrum, with a more relaxed style.
+  </p>
+  <p>
+    Another pattern emerged when filtering by year recent years after 2015 have slightly higher danceability averages, which probably means like the trend of music changed and was more popular, which is true because that era was full of dancing songs!
+  </p>
+  <p>
+    When switching the axes to duration_ms, it became clear that duration doesn’t vary much by genre but shows interesting outliers especially very short or long tracks in experimental genres.
   </p>
 
-  <h2>Sample Screenshots</h2>
-  <p>Danceability vs Energy across all genres:</p>
-  <img src="https://raw.githubusercontent.com/senaiyohanness/Visualize/main/screenshot1.png" alt="Scatterplot Screenshot">
+  <h2>Sample Screenshot</h2>
+  <p>Danceability vs Energy across all genres (live visualization):</p>
+  <img src="https://raw.githubusercontent.com/senaiyohanness/Visualize/main/visual%20screenshot.png" alt="Scatterplot Screenshot">
 
   <h2>Video Walkthrough</h2>
   <p>Below is a recorded walkthrough of my interactive visualization:</p>
